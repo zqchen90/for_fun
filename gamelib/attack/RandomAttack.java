@@ -18,7 +18,7 @@ public class RandomAttack extends Attack {
 						 int minDamage,
 						 int damageAmplifier,
 						 int probability,
-						 int coldTime) {
+						 int coldTime = 0) {
     super(maxDamage, minDamage, damageAmplifier);
     this.probability = probability;
     this.coldTime = coldTime;
