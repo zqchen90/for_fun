@@ -1,13 +1,26 @@
 ﻿public abstract class Attack {
-  private int MaxDamage = 0;
-  private int MinDamage = 0;
-  private int Probability = 0;
-  private int ColdTime = 0;
+  private int maxDamage = 0;
+  private int minDamage = 0;
+  private int damageAmplifier = 100;  // is a precent number
   
-  public int getMaxDamage() {
-    return MaxDamage;
+  public Attack() {
+    maxDamage = 0;
+    minDamage = 0;
+    damageAmplifier = 100;
   }
-  public void setMaxDamage(int maxDamage) {
-    MaxDamage = maxDamage;
+
+  public Attack(int maxDamage,
+						 int minDamage,
+						 int damageAmplifier,
+    this.maxDamage = maxDamage;
+    this.minDamage = minDamage;
+    this.damageAmplifier = damageAmplifier;
   }
+
+  public abstract int launch();
+
+  public void setDamageAmplifier(int damageAmplifier) {
+    this.damageAmplifier = damageAmplifier;
+  }
+
 }
