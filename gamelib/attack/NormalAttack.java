@@ -1,5 +1,5 @@
 ﻿public class NormalAttack extends Attack {
-	public NormalAttack(int damage, int damageAmplifier) {
+	public NormalAttack(int damage, int damageAmplifier = 100) {
 		super(damage, damage, damageAmplifier);
 	}
 
