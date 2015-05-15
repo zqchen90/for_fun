@@ -13,6 +13,11 @@ public abstract class Attack {
   public Attack(int maxDamage,
 						 int minDamage,
 						 int damageAmplifier) {
+    if (minDamage > maxDamage) {
+      int damage = maxDamage;
+      maxDamage = minDamage;
+      minDamage = damage;
+    }
     this.setMaxDamage(maxDamage);
     this.setMinDamage(minDamage);
     this.setDamageAmplifier(damageAmplifier);
