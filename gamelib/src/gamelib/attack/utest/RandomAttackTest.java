@@ -21,7 +21,7 @@ public class RandomAttackTest {
   }
   
   @Test
-  public void testLaunch() {
+  public void testLaunchDamage() {
     int repeatTimes = 100;
     int repeat = 0;
     while (repeat < repeatTimes) {
