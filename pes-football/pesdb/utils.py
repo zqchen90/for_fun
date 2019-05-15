@@ -8,7 +8,7 @@ import difflib
 def stringSimi(s1, s2):
   s1 = s1.upper().replace(' ', '').replace('.', '')
   s2 = s2.upper().replace(' ', '').replace('.', '')
-  return difflib.SequenceMatcher(None, s1, s2).quick_ratio()
+  return difflib.SequenceMatcher(None, s1, s2).ratio()
 
 def findName(nameList, name):
   targetIdx = -1
