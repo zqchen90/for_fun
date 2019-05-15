@@ -13,7 +13,7 @@ from player_parser import parseName, parseScout
 def main():
   playerAbilitiesMap = []
   for caseId in PLAYER_IDS:
-    dataStr = load(caseId)
+    dataStr = load('raw_data/' + caseId)
     name = parseName(dataStr)
     scouts = parseScout(dataStr)
 

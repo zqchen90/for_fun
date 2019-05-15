@@ -12,7 +12,7 @@ from player_parser import parseName, parseMaxLevel, parseAbility
 def main():
   playerAbilitiesMap = []
   for caseId in PLAYER_IDS:
-    dataStr = load(caseId)
+    dataStr = load('raw_data/' + caseId)
     name = parseName(dataStr)
     maxLevel = parseMaxLevel(dataStr)
     abilities = parseAbility(dataStr)

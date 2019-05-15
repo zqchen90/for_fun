@@ -17,9 +17,9 @@ def parsePlayerIds(dataStr):
 
 def main():
   playerIds = []
-  for i in range(1, 5, 1):
+  for i in range(5, 11, 1):
     dataId = 'list_page%d' % (i)
-    dataStr = load(dataId)
+    dataStr = load('raw_data/' + dataId)
     ids = parsePlayerIds(dataStr)
     print('read %d players from %s' % (len(ids), dataId))
     playerIds.extend(ids)
