@@ -4,11 +4,18 @@
 # @Author  : zhaoqun.czq
 
 import difflib
+from constants import *
 
 def stringSimi(s1, s2):
   s1 = s1.upper().replace(' ', '').replace('.', '')
   s2 = s2.upper().replace(' ', '').replace('.', '')
   return difflib.SequenceMatcher(None, s1, s2).ratio()
+
+def replaceLatinChar(name):
+  convertName = name
+  for item in LATIN_MAPPING:
+    convertName = convertName.replace(item['latin'], item['eng'])
+  return convertName
 
 def findName(nameList, name):
   targetIdx = -1
@@ -16,12 +23,13 @@ def findName(nameList, name):
   nameSimi = 0
   name = name.upper()
   for i, player in enumerate(nameList):
-    if player == name:
+    compareName = replaceLatinChar(player)
+    if compareName == name:
       return i
-    if ' ' in player:
-      if player.split(' ')[1] == name:
+    if ' ' in compareName:
+      if compareName.split(' ')[1] == name:
         return i
-    simi = stringSimi(name, player)
+    simi = stringSimi(name, compareName)
     if simi > nameSimi:
       targetIdx = i
       nameSimi = simi
