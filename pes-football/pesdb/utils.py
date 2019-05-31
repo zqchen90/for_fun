@@ -5,6 +5,20 @@
 
 import difflib
 from constants import *
+import numpy as np
+
+def normalize(data, axis = 1):
+  rowMax = np.max(data, axis = axis)
+  rowMaxT = np.reshape(rowMax, (len(rowMax), 1))
+  normData = data / rowMaxT
+  assert(data.shape == normData.shape)
+  return normData
+
+def vectorDistance(vector1, vector2, type = 'cosine'):
+  if type == 'cosine':
+    return vector1.dot(vector2) / np.sqrt(vector1.dot(vector1) * vector2.dot(vector2))
+  else:
+    return 0
 
 def stringSimi(s1, s2):
   s1 = s1.upper().replace(' ', '').replace('.', '')
