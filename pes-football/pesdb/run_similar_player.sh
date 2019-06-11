@@ -1,8 +1,13 @@
 python similar_player.py messi
 python similar_player.py cronaldo
 python similar_player.py lukaku
-python similar_player.py sergiobusquets
-python similar_player.py daviddegea
 python similar_player.py msalah
-python similar_player.py ehazard
+python similar_player.py davidsilva
 python similar_player.py nkante
+python similar_player.py casemiro
+python similar_player.py mpjanic
+python similar_player.py sergiobusquets
+python similar_player.py dalaba
+python similar_player.py rvarane
+python similar_player.py jboateng
+python similar_player.py daviddegea

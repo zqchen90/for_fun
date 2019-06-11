@@ -62,3 +62,32 @@ python smart_scout.py -p messi -s SS#30+
 ```
 
 will give you all possible players.
+
+
+## 3. Find similar players
+
+Find top 10 similar players with the given one according to players' abilities. Similarity is calculated by followings steps:
+
+ - Treat player's ability as a vector
+ - Apply PCA to reduce dimensions of ability vector
+ - Use cosine to calculate similarity
+
+
+``` python
+python similar_player.py messi
+
+--------------------L. MESSI--------------------
+idx  ratings(30)  similarity  name
+ 1       88          0.993    P. DYBALA
+ 2       88          0.987    P. COUTINHO
+ 3       85          0.986    F. THAUVIN
+ 4       94          0.983    NEYMAR
+ 5       86          0.976    D. MERTENS
+ 6       86          0.971    N. FEKIR
+ 7       88          0.968    M. REUS
+ 8       90          0.963    E. HAZARD
+ 9       90          0.959    A. GRIEZMANN
+10       84          0.956    F. BERNARDESCHI
+```
+
+The results are shown as above. It really make sense that P. DYBALA and P. COUTINHO are very similar to L. MESSI.

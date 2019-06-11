@@ -18,7 +18,7 @@ from sklearn.decomposition import PCA
 PCA_N_COMPONENTS = 6
 DEFAULE_LEVEL = 30
 NORM_FLAG = False
-VECTOR_NORM_FLAG = True
+VECTOR_NORM_FLAG = False
 DEBUG = False
 
 def pca(data, n):
