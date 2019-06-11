@@ -15,12 +15,16 @@ warnings.filterwarnings('ignore')
 
 from sklearn.decomposition import PCA
 
-n = 6
+PCA_N_COMPONENTS = 6
+DEFAULE_LEVEL = 30
+NORM_FLAG = False
+VECTOR_NORM_FLAG = True
+DEBUG = False
 
-def pca(data):
+def pca(data, n):
   pca = PCA(n_components=n)
   newData = pca.fit_transform(data)
-  print(pca.components_)  
+  #print(pca.components_)  
   #print(pca.explained_variance_ratio_)  
   return newData
 
@@ -29,49 +33,68 @@ def loadPlayerAbilities(dataPath):
     playerAbilities = json.loads(fin.read())
   return playerAbilities
 
-def getAbility(playerAbilities, name, level):
-  abilities = []
-  idx = findName(map(lambda x:x['name'], playerAbilities), name)
-
-  if idx >= 0:
-    player = playerAbilities[idx]
-    name = player['name']
-    if level > player['maxlevel']:
-      level = player['maxlevel']
-    for i, abilityName in enumerate(ABILITY_NAMES):
-      abilities.append(player['abilityList'][i][level - 1])
-
-  return name, level, abilities
-
 def processAbility(ability):
   abilityArray = np.array(ability, dtype=np.float64)
-  maxAbility = np.max(abilityArray)
-  return abilityArray / maxAbility
+  if VECTOR_NORM_FLAG:
+    maxAbility = np.max(abilityArray)
+    return abilityArray / maxAbility
+  else:
+    return abilityArray
 
-def findSimilarPlayer(playerAbilities, name):
-  DEFAULE_LEVEL = 30
-  name, level, currentAbility = getAbility(playerAbilities, name, DEFAULE_LEVEL)
-
-  print('-' * 20 + name + '-' * 20)
-  simiList = []
-  for otherIdx, player in enumerate(playerAbilities):
-    if name == player['name']:
-      continue
+# Load players' abilities at certain level
+# and converted to numpy array
+def getAllAbilities(playerAbilities, level):
+  overallRatings = []
+  abilities = []
+  for idx, player in enumerate(playerAbilities):
     otherAbility = []
     for i, abilityName in enumerate(ABILITY_NAMES):
-      otherAbility.append(player['abilityList'][i][DEFAULE_LEVEL - 1])
+      ability = player['abilityList'][i][level - 1]
+      if 'Overall Rating' == abilityName:
+        overallRatings.append(ability)
+      else:
+        otherAbility.append(ability)
+    abilities.append(otherAbility)
+  return np.array(overallRatings, dtype=np.float64), np.array(abilities, dtype=np.float64)
+
+def findSimilarPlayer(playerAbilities, name):
+  idx = findName(map(lambda x:x['name'], playerAbilities), name)
+  currentName = playerAbilities[idx]['name']
+
+  overallRatings, allAbilities = getAllAbilities(playerAbilities, DEFAULE_LEVEL)
+  if NORM_FLAG:
+    normAbilities = normalize(allAbilities)
+  else:
+    normAbilities = allAbilities
+  normAbilitiesDimReduction = pca(normAbilities, PCA_N_COMPONENTS)
+
+  if DEBUG:
+    print('current player: %s (%d)' %(currentName, overallRatings[idx]))
+    print('original ability:')
+    print(allAbilities[idx])
+    print('normalized ability:')
+    print(normAbilities[idx])
+    print('normalized ability with pca:')
+    print(normAbilitiesDimReduction[idx])
+
+
+  currentAbility = normAbilitiesDimReduction[idx]
+
+  print('-' * 20 + currentName + '-' * 20)
+  simiList = []
+  for otherIdx, otherAbility in enumerate(normAbilitiesDimReduction):
+    if idx == otherIdx:
+      continue
+    otherAbility = normAbilitiesDimReduction[otherIdx]
     currentVector = processAbility(currentAbility)
     otherVector = processAbility(otherAbility)
     simi = vectorDistance(currentVector, otherVector)
-    # if 'NEYMAR' ==player['name']:
-    #   print(currentVector)
-    #   print(otherVector)
-    #   print(simi)
     simiList.append([otherIdx, simi])
     
   sortSimiList = sorted(simiList, key = lambda x: x[1], reverse = True)
+  print('idx  ratings(30)  similarity  name')
   for i in range(10):
-    print('%2d %4.4f  %s' %(i+1, sortSimiList[i][1], playerAbilities[sortSimiList[i][0]]['name']))
+    print('%2d %8d       %8.3f    %s' %(i+1, overallRatings[sortSimiList[i][0]], sortSimiList[i][1], playerAbilities[sortSimiList[i][0]]['name']))
 
 def main():
   playerAbilities = loadPlayerAbilities('./data/abilities.txt')
