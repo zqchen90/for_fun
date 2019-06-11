@@ -45,28 +45,30 @@ def getScoutsByScout(scoutsMap, targetScouts):
   return candicates
 
 # get scouts combinations by candicateScouts only
-def getScoutsByScoutOnly(scoutsMap, candicateScouts):
+def getScoutsByScoutOnly(scoutsMap, candicateScouts, maxRating = "4*"):
   candicateScoutsStr = ' '.join(candicateScouts)
   fullCandicates = []
   needOneCandicates = []
   for player in scoutsMap:
     for scout in player['scouts']:
+      if scout['rating'] > maxRating:
+        continue 
       if (scout['scouts'][0] in candicateScoutsStr or scout['scouts'][0] == '-') \
         and (scout['scouts'][1] in candicateScoutsStr or scout['scouts'][1] == '-') \
         and (scout['scouts'][2] in candicateScoutsStr or scout['scouts'][2] == '-'):
-        fullCandicates.append('%20s %3s %36s %36s %36s' %(player['name'], scout['rating'], \
+        fullCandicates.append('%20s %3s %34s %34s %34s' %(player['name'], scout['rating'], \
                                      scout['scouts'][0], scout['scouts'][1], \
                                      scout['scouts'][2]))
       elif scout['scouts'][0] in candicateScoutsStr and scout['scouts'][1] in candicateScoutsStr:
-        needOneCandicates.append('%20s %3s %36s %36s %36s - %36s' %(player['name'], scout['rating'], \
+        needOneCandicates.append('%20s %3s %34s %34s %34s - %34s' %(player['name'], scout['rating'], \
                                      scout['scouts'][0], scout['scouts'][1], \
                                      scout['scouts'][2], scout['scouts'][2]))
       elif scout['scouts'][0] in candicateScoutsStr and scout['scouts'][2] in candicateScoutsStr:
-        needOneCandicates.append('%20s %3s %36s %36s %36s - %36s' %(player['name'], scout['rating'], \
+        needOneCandicates.append('%20s %3s %34s %34s %34s - %34s' %(player['name'], scout['rating'], \
                                      scout['scouts'][0], scout['scouts'][1], \
                                      scout['scouts'][2], scout['scouts'][1]))
       elif scout['scouts'][1] in candicateScoutsStr and scout['scouts'][2] in candicateScoutsStr:
-        needOneCandicates.append('%20s %3s %36s %36s %36s - %36s' %(player['name'], scout['rating'], \
+        needOneCandicates.append('%20s %3s %34s %34s %34s - %34s' %(player['name'], scout['rating'], \
                                      scout['scouts'][0], scout['scouts'][1], \
                                      scout['scouts'][2], scout['scouts'][0]))
       else:
