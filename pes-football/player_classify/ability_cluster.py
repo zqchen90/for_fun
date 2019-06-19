@@ -17,6 +17,20 @@ import string
 
 from sklearn.cluster import KMeans
 from sklearn import metrics
+import matplotlib.pyplot as plt
+
+def plot(label, data, dim, clusterN):
+  colorList = ["r", "b", "g", "k", "y", "c", "m"]
+  if 2 != dim:
+    print "INVALID dim to plot"
+  else:
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    color = []
+    for l in label:
+      color.append(colorList[l])
+    ax.scatter(data[:, 0], data[:, 1], color = color, alpha=0.5)
+    plt.savefig('./plots/ability_cluster.png')
 
 def abilityCluster(attributes, abilities, pcaN, clusterN):
   reduceDimAbilities = pca(abilities, pcaN)
@@ -35,6 +49,8 @@ def abilityCluster(attributes, abilities, pcaN, clusterN):
     playerInfos = sorted(playersInCluster[i], reverse=True)
     for j in range(MAX_PLAYER_PRINT):
       print(playerInfos[j])
+
+  return reduceDimAbilities, predicts
 
 def findBestCluster(attributes, abilities):
   print('Now find best parameters for clustering...')
@@ -66,7 +82,8 @@ if __name__ == '__main__':
   if len(sys.argv) == 3:
     pcaN = string.atoi(sys.argv[1])
     clusterN = string.atoi(sys.argv[2])
-    abilityCluster(attributes, data, pcaN, clusterN)
+    reduceDimAbilities, predicts = abilityCluster(attributes, data, pcaN, clusterN)
+    plot(predicts, reduceDimAbilities, pcaN, clusterN)
   else:
     printUsage()
     # Best pcaN = 2, best clusterN = 4, score = 801.87
